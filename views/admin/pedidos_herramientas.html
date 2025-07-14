@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requisiciones</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "><i class="bi bi-tools"></i>Pedidos de Herramientas</h3>
+                <h6 class="fw-medium text-secondary">Esta es la sección para poder administrar lo pedidos de
+                    herramientas
+                    solicitados por cada una de las duplas. Se puede visualizar las herramientas solicitadas, se puede
+                    cambiar la cantidad de herramientas, aprobar, anular o
+                    generar un documento PDF.</h6>
+            </div>
+        </div>
+        <div class="row">
+            <!-- formulario de búsqueda -->
+            <form class="col-12 my-4" id="searchForm">
+                <div class="row">
+                    <div class="col-4">
+                        <input type="search" class="form-control fs-3" name="search"
+                            placeholder="Buscar por código dupla..." required>
+                    </div>
+                    <div class="col-8">
+                        <button type="submit" class="btn btn-success mt-2">
+                            <h4>
+                                <i class="bi bi-search"></i>
+                            </h4>
+                        </button>
+                        <a href="papelera_herramientas.html" class="btn btn-warning mt-2" role="button">
+                            <h4>
+                                <i class="bi bi-trash-fill"></i>
+                                Papelera
+                            </h4>
+                        </a>
+                        <a href="historial_herramientas.html" class="btn btn-info mt-2" role="button">
+                            <h4>
+                                <i class="bi bi-clock-history"></i>
+                                Historial
+                            </h4>
+                        </a>
+                        <button type="button" class="btn btn-warning mt-2" onclick="openCreate()">
+                            <h4>
+                                <i class="bi bi-clipboard-plus-fill"></i>
+                                Crear Pedido
+                            </h4>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- tabla para mostrar la tabla de contenido -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Código dupla</th>
+                    <th>Fecha Generada</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <!-- cuerpo de la tabla de contenido -->
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <!-- modal para mostrar los materiales de cada requisición -->
+        <div class="modal fade" id="saveModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start" id="modalHeader">
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr id="tableColumns">
+                                    <th>MATERIAL</th>
+                                    <th>CANTIDAD</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="modalFooter">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para mostrar la dupla para generar un pedido de herramientas -->
+        <div class="modal fade" id="duplaModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <h5 class="modal-title">Generar pedido de herramientas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="pedidoForm">
+                        <div class="modal-body" id="modalBody">
+                            seleccione una dupla para poder asignarle herramientas a un pedido
+                            <select name="duplaPedido" id="duplaPedido" class="form-select my-2" required>
+
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Crear Pedido</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para editar la cantidad de herramientas -->
+        <div class="modal fade" id="itemModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1>Cambiar cantidad de herramientas</h1>
+                        <h3 id="herramientaName">nombre</h3>
+                    </div>
+                    <form id="itemForm">
+                        <div class="modal-body row">
+                            <input type="number" class="d-none" id="idDetalle" name="idDetalle">
+                            <input type="number" class="d-none" id="idDetalleHerramienta" name="idDetalleHerramienta">
+                            <div class="col-sm-12">
+                                <label for="cantidadHerramienta" class="form-label">Cantidad</label>
+                                <input id="cantidadHerramienta" type="number" name="cantidadHerramienta" min="1"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="herramientaButton">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Componente Modal para mostrar una caja de diálogo para agregar imágenes de evidencia -->
+        <div class="modal fade" id="picturesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <!-- Contenido del componente Modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-4">imágenes de evidencia</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="picturesForm">
+                        <input type="number" class="d-none" id="idEvidencia" name="idEvidencia">
+                        <input type="number" class="d-none" id="typeImage" name="typeImage">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 1</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label >
+                                            <img id="imagenMuestra1"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 2</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label>
+                                            <img id="imagenMuestra2"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-lg py-2 fs-5"
+                                data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/pedidos_herramientas.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

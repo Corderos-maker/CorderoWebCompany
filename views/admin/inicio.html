@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h1 class="" id="mainTitle"></h1>
+        <div class="row text-center">
+            <div class="col-12 col-lg-6 mt-5">
+                <h2>Materiales con falta de stock</h2>
+                <div class="accordion" id="itemMaterial">
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 mt-5">
+                <h2>Requisiciones recientes</h2>
+                <div class="accordion" id="requisicionDupla">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="my-5 row justify-content-center text-center">
+            <h2 class="">Jornadas laboral</h2>
+            <div class="my-4">
+                <button type="button" class="btn btn-secondary" id="inicioBoton" onclick="inicioJornadas()">
+                    <h3>Inicios Recientes</h3>
+                </button>
+                <button type="button" class="btn btn-secondary" id="finalizacionBoton" onclick="finalizacionJornadas()">
+                    <h3>Finalizaciones Recientes</h3>
+                </button>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="accordion" id="jornadasEmpleados">
+                </div>
+            </div>
+        </div>
+        <!-- modal para mostrar los materiales de cada requisición -->
+        <div class="modal fade" id="saveModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start" id="modalHeader">
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr id="tableColumns">
+                                    <th>MATERIAL</th>
+                                    <th>CANTIDAD</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="modalFooter">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para editar la cantidad de materiales -->
+        <div class="modal fade" id="itemModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1>Cambiar cantidad de material</h1>
+                        <h3 id="materialName">nombre</h3>
+                    </div>
+                    <form id="itemForm">
+                        <div class="modal-body row">
+                            <input type="number" class="d-none" id="idDetalle" name="idDetalle">
+                            <input type="number" class="d-none" id="idDetalleMaterial" name="idDetalleMaterial">
+                            <div class="col-sm-12">
+                                <label for="cantidadMaterial" class="form-label">Cantidad</label>
+                                <input id="cantidadMaterial" type="number" name="cantidadMaterial" min="1"
+                                    class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="materialButton">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- ? importación de librería para generar gráficos -->
+    <script src="../../resources/js/chart.umd.min.js"></script>
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <!-- ! cambiar el link js para el controntrolador -->
+    <script src="../../controllers/admin/inicio.js"></script>
+</body>
+
+</html>

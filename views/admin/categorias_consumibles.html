@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h1 id="mainTitle"></h1>
+        <!-- ? titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold"><i class="bi bi-tags-fill"></i>Gestión de categorías de consumibles </h3>
+                <h6 class="fw-medium text-secondary">Bienvenido a la sección de gestión de categorías para los
+                    consumibles. Aquí
+                    puedes
+                    manejar todas las categorías registrados para asignárselos a los consumibles.<br>
+                    La tabla te permite eliminar, dar de baja, editar, ver gráficas y
+                    reportes generales de actividad.</h6>
+            </div>
+        </div>
+        <a href="consumibles.html">
+            <button type="button" class="btn btn-success mx-3 my-4">
+                <h4>Consumibles <i class="bi bi-cup-hot-fill"></i> </h4>
+            </button>
+        </a>
+        <!-- Formulario de búsqueda -->
+        <div class="row">
+            <form class="col-sm-12 col-md-6" id="searchForm">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="search" class="form-control" name="search" placeholder="Buscar" required>
+                    </div>
+                    <div class="col-6">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">
+                                <h5><i class="bi bi-search"></i></h5>
+                            </button>
+                            <button type="reset" class="btn btn-secondary" onclick="fillTable()">
+                                <h5> <i class="bi bi-arrow-counterclockwise"></i></h5>
+                            </button>
+                            <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
+                            <button type="button" class="btn btn-warning" onclick="openCreate()">
+                                <h5><i class="bi bi-plus-square-fill"></i></h5>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p id="rowsFound" class=" fw-bold mt-3"></p>
+        <!-- Contenedor para la tabla con scroll-->
+        <div id="tableBody" class="container justify-content-center row">
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitle">Titulo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="saveForm">
+                        <div class="modal-body">
+                            <div class="row">
+                                <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                                <input type="number" class="d-none" id="idCategoria" name="idCategoria">
+                                <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                    <label for="imagenCategoria" style="cursor: pointer;">
+                                        <img id="imagenMuestra"
+                                            class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                            src="../../resources/images/error/404material.png"
+                                            onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                            id="imagenVisualAdmin" alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                    </label>
+                                    <input id="imagenCategoria" type="file" name="imagenCategoria"
+                                        class="form-control d-none" accept=".png, .jpg">
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12 my-2">
+                                            <label for="" class="form-label">Nombre categoría</label>
+                                            <input type="text" class="form-control" name="nombreCategoria"
+                                                id="nombreCategoria" placeholder="Ingrese el nombre de categoría...">
+                                        </div>
+                                        <div class="col-12 my-2">
+                                            <label for="" class="form-label">Descripción categoría</label>
+                                            <textarea type="text" class="form-control" name="descripcionCategoria"
+                                                id="descripcionCategoria"
+                                                placeholder="Ingrese  la descripción..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="modalButton">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/categorias_consumibles.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

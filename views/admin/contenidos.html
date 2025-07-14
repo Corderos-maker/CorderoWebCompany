@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidades estándar</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold"> <i class="bi bi-box-seam-fill"></i> Unidades Estándar
+                </h3>
+                <h6 class="fw-medium text-secondary">Bienvenido a la sección de gestión de las unidades estándar. Aquí
+                    puedes
+                    administrar las cantidades que tienen cada caja, rollo o bobina para asignarlos a cada uno de los
+                    materiales de la bodega<br>
+                    La tabla te permite eliminar, dar de baja, editar, ver las cantidades y clasificar por categoría
+                    tipo contenidos
+                </h6>
+            </div>
+        </div>
+        <a href="bodega.html">
+            <button type="button" class="btn btn-success mx-3">
+                <h4>Bodega <i class="bi bi-archive-fill"></i></h4>
+            </button>
+        </a>
+        <div class="container">
+            <div class="d-flex flex-row align-items-center gap-2 ">
+                <!-- Dropdown -->
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="dropdown dropend my-2">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                ordenar por nombre
+                            </button>
+                            <ul class="dropdown-menu my-2">
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(4)'>Empaque</a></li>
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(5)'>Rollos</a></li>
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(6)'>Bobinas</a></li>
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(7)'>Otros</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown dropend my-2">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                ordenar por unidad
+                            </button>
+                            <ul class="dropdown-menu my-2">
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(1)'>Pieza</a></li>
+                                <li><a class="dropdown-item" href="#" onclick='fillTableNameSearch(2)'>Metros</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 my-2">
+
+                        <!-- Botón de recarga -->
+                        <button type="button" class="btn btn-secondary" onclick="fillTable()">
+                            <h5>Recargar <i class="bi bi-arrow-clockwise"></i></h5>
+                        </button>
+                        <!-- Botón de agregar -->
+                        <button type="button" class="btn btn-primary" onclick="openCreate()">
+                            <h5>Agregar <i class="bi bi-plus-square-fill"></i></h5>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tabla para mostrar los registros existentes -->
+        <table class="table table-striped my-5 ">
+            <!-- Encabezado de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="4" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>NOMBRE</th>
+                    <th>UNIDAD</th>
+                    <th>CANTIDAD</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tableBody"></tbody>
+        </table>
+        <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close">
+                        </button>
+                    </div>
+                    <!-- Formulario para guardar un registro -->
+                    <form id="saveForm">
+                        <div class="modal-body row g-3">
+                            <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                            <input type="number" class="d-none" id="idContenido" name="idContenido">
+                            <div class="row">
+                                <div class="col-12 col-lg-6 my-2">
+                                    <label for="nombreContenido" class="form-label">Nombre</label>
+                                    <select name="nombreContenido" id="nombreContenido" class="form-select"
+                                        aria-label="Default select example" required>
+                                        <option selected>Tipo de contenido</option>
+                                        <option value="Empaque">Empaque</option>
+                                        <option value="Rollos">Rollos</option>
+                                        <option value="Bobinas">Bobinas</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-lg-6 my-2">
+                                    <label for="unidadContenido" class="form-label">Unidad Contenido</label>
+                                    <select name="unidadContenido" id="unidadContenido" class="form-select"
+                                        aria-label="Default select example" required>
+                                        <option selected>Seleccione una unidad</option>
+                                        <option value="Piezas">Piezas</option>
+                                        <option value="Metros">Metros</option>
+                                        <option value="Rollos">Rollos</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-lg-6 my-2">
+                                    <label for="cantidadContenido" class="form-label">Cantidad estándar</label>
+                                    <input type="number" name="cantidadContenido" id="cantidadContenido"
+                                        class="form-control" placeholder="Ingrese un valor numérico...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/conenidos.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

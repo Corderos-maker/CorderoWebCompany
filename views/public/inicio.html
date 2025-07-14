@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h1 id="mainTitle"></h1>
+        <div class="text-center">
+            <div class="my-4">
+                <h3>CÓDIGO DUPLA: </h3>
+                <p class="h4" id="usuarioDupla"></p>
+
+            </div>
+            <form id="saveForm" class="mb-4">
+                <input type="number" class="d-none" id="idInformacion" name="idInformacion">
+                <!-- campo oculto para obtener la ubicación actual del usuario -->
+                <input type="text" class="d-none" id="horaInicio" name="horaInicio">
+                <input type="text" class="d-none" id="horaFinal" name="horaFinal">
+                <!-- <button type="button" class="btn btn-primary" onclick="openLocation()">ubicación actual</button> -->
+                <div class="mt-5 row" id="buttonsOptions">
+                </div>
+            </form>
+            <hr class="border-5">
+            <a href="materiales.html">
+                <button type="button" class="btn btn-success my-3">
+                    <h1>solicitar material</h1>
+                </button>
+            </a>
+            <div id="infoEmployee" class="d-flex flex-column gap-3">
+                <h3>Nombres empleados</h3>
+                <p class="h5" id="nombreEmpleado1"></p>
+                <p class="h5" id="nombreEmpleado2"></p>
+                <h3>Teléfonos empleados</h3>
+                <p class="h5" id="telefonoEmpleado1"></p>
+                <p class="h5" id="telefonoEmpleado2"></p>
+            </div>
+            <button type="button" class="btn btn-danger" onclick="logOut()">
+                <h4>Cerrar sesión</h4>
+            </button>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/public.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <!-- ! cambiar el link js para el controntrolador -->
+    <script src="../../controllers/public/inicio.js"></script>
+
+</body>
+
+</html>

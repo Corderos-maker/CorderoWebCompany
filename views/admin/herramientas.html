@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- ? titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold"><i class="bi bi-tools"></i>Gestión de herramientas y EPP</h3>
+                <h6 class="fw-medium text-secondary">Bienvenido a la sección de gestión de herramientas. Aquí
+                    puedes
+                    manejar todas las herramientas registrados para asignárselos a una dupla dejando un registro en el
+                    historial.<br>
+                    La tabla te permite eliminar, eliminar, editar, asignar a duplas</h6>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="row justify-content-center g-4 px-2">
+                    <!-- Added g-4 for gap, py-3 for vertical padding, px-2 for horizontal padding -->
+                    <div class="col-auto"> <!-- Changed to col-auto for automatic width based on content -->
+                        <button type="button" class="py-4 btn btn-success disabled" onclick="fillTable(null, 1)"
+                            id="botonGeneral">
+                            <h5 class="mb-0">Ver todas las categorías</h5>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="py-4 btn btn-secondary" onclick="fillTable(null, 2)"
+                            id="botonManualLigera">
+                            <h5 class="mb-0"><i class="bi bi-wrench"></i> Manual ligera</h5>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="py-4 btn btn-secondary" onclick="fillTable(null, 3)"
+                            id="botonManualPesada">
+                            <h5 class="mb-0"><i class="bi bi-hammer"></i> Manual pesada</h5>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="py-4 btn btn-secondary" onclick="fillTable(null, 4)"
+                            id="botonElectrica">
+                            <h5 class="mb-0"><i class="bi bi-lightning-charge-fill"></i> Eléctrica</h5>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="py-4 btn btn-secondary" onclick="fillTable(null, 5)"
+                            id="botonEPP">
+                            <h5 class="mb-0"><i class="bi bi-shield-shaded"></i> EPP (EQUIPO PROTECCIÓN PERSONAL)</h5>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de búsqueda -->
+        <div class="row">
+            <form class="col-sm-12 col-md-6" id="searchForm">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="search" class="form-control" name="search" placeholder="Buscar" required>
+                    </div>
+                    <div class="col-6">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">
+                                <h5><i class="bi bi-search"></i></h5>
+                            </button>
+                            <button type="reset" class="btn btn-secondary" onclick="fillTable(null, 1)">
+                                <h5> <i class="bi bi-arrow-counterclockwise"></i></h5>
+                            </button>
+                            <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
+                            <button type="button" class="btn btn-warning" onclick="openCreate()">
+                                <h5><i class="bi bi-plus-square-fill"></i></h5>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- ? se escribe la cantidad de registros en la tabla -->
+        <p id="rowsFound" class=" fw-bold mt-3"></p>
+        <!-- Contenedor para la tabla con scroll-->
+        <div id="tableBody" class="container justify-content-center row">
+        </div>
+
+        <!-- ? modal para guardar o editar un registro -->
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitle">Titulo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="saveForm">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idHerramienta" name="idHerramienta">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                    <label for="imagenHerramienta" style="cursor: pointer;">
+                                        <img id="imagenMuestra"
+                                            class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                            src="../../resources/images/error/404Herramienta.png"
+                                            onerror="this.onerror=null; this.src='../../resources/images/error/404Herramienta.png';"
+                                            alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                    </label>
+                                    <input id="imagenHerramienta" type="file" name="imagenHerramienta"
+                                        class="form-control d-none" accept=".png, .jpg">
+                                </div>
+                                <div class="col-12">
+                                    <div class="row gy-3">
+                                        <!-- ? Nombre herramienta -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Nombre herramienta</label>
+                                            <input id="nombreHerramienta" name="nombreHerramienta" class="form-control"
+                                                autocomplete="off" required
+                                                placeholder="Ingrese el nombre de la herramienta...">
+                                        </div>
+                                        <!-- ? Descripción herramienta-->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Descripción herramienta</label>
+                                            <textarea id="descripcionHerramienta" name="descripcionHerramienta"
+                                                autocomplete="off" class="form-control"
+                                                placeholder="ingrese la descripción de la herramienta..."></textarea>
+                                        </div>
+                                        <!-- ? Categoría herramienta-->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Categoría herramienta</label>
+                                            <select id="categoriaHerramienta" name="categoriaHerramienta"
+                                                class="form-select" autocomplete="off" required>
+                                                <option selected>seleccione una categoría</option>
+                                                <option value="Manual">Tipo Manual</option>
+                                                <option value="Electricas">Tipo Eléctricas</option>
+                                                <option value="EPP">EPP</option>
+                                            </select>
+                                        </div>
+                                        <!-- ? Tipo manual -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Tipo Manual</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="subManualHerramienta"
+                                                    id="subManualHerramienta0" value="0" checked>
+                                                <label class="form-check-label" for="subManualHerramienta0">
+                                                    Sin definir
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="subManualHerramienta"
+                                                    id="subManualHerramienta1" value="1" disabled>
+                                                <label class="form-check-label" for="subManualHerramienta1">
+                                                    Manual ligera
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="subManualHerramienta"
+                                                    id="subManualHerramienta2" value="2" disabled>
+                                                <label class="form-check-label" for="subManualHerramienta2">
+                                                    Manual pesada
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="subManualHerramienta"
+                                                    id="subManualHerramienta3" value="3" disabled>
+                                                <label class="form-check-label" for="subManualHerramienta3">
+                                                    EPP
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- ? Cantidad herramienta -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label" for="cantidadHerramienta">Cantidad herramientas
+                                            </label>
+                                            <input type="number" class="form-control" id="cantidadHerramienta"
+                                                name="cantidadHerramienta"
+                                                placeholder="ingrese cantidad herramientas...">
+                                        </div>
+                                        <!-- ? Estado herramienta -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label" for="visibilidadHerramienta">Visibilidad
+                                                herramienta
+                                            </label>
+                                            <!-- Icono con tooltip -->
+                                            <span class="text-primary ms-2" data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Activo = visible,  Inactivo = no visible">
+                                                <i class="bi bi-question-circle-fill fs-4"></i>
+                                                <!-- Bootstrap Icons -->
+                                            </span>
+                                            <div class="form-switch form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    id="visibilidadHerramienta" name="visibilidadHerramienta" checked>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="modalButton">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para alterar la cantidad del Contenido -->
+        <div class="modal fade" id="herramientaModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <!-- <form id=""></form> -->
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="number" class="d-none" id="idHerramientaCantidad" name="idHerramienta">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Actualizar cantidad</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center gap-3">
+                        <!-- gap-3 añade espacio vertical entre botones -->
+                        <button type="button" class="btn btn-secondary w-75" data-bs-target="#TipoHerramientaModal"
+                            data-bs-toggle="modal"
+                            onclick="openQuantity(document.getElementById('idHerramientaCantidad').value, 1)">
+                            <h3 class="mb-0">Agregar
+                                Contenido</h3>
+                        </button>
+                        <button type="button" class="btn btn-secondary w-75" data-bs-target="#TipoHerramientaModal"
+                            data-bs-toggle="modal"
+                            onclick="openQuantity(document.getElementById('idHerramientaCantidad').value, 2)">
+                            <h3 class="mb-0">Restar
+                                Contenido</h3>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modas para agregar o restar la cantidad del material -->
+        <div class="modal fade" id="TipoHerramientaModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content  ">
+                    <form id="updateQuantityForm">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idTipoHerramientaCantidad"
+                            name="idTipoHerramientaCantidad">
+                        <div class="modal-header">
+                            <h2 class="modal-tittle" id="TipoAltHerramienta"></h2>
+                            <button type="button" class="btn-close  text-reset" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column align-items-center gap-3 text-center">
+                            <h4>Cantidad Actual:</h4>
+                            <h4 class="" id="cantidadActualHerramienta"></h4>
+                            <h4>Nueva cantidad:</h4>
+                            <h4 id="cantidadActualizadaHerramienta"></h4>
+                            <div class="input-group w-50">
+                                <span class="input-group-text">Cantidad</span>
+                                <input type="number" class="form-control" aria-label="Cantidad a modificar..."
+                                    id="actualizarHerramienta" name="actualizarHerramienta" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/herramientas.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+</body>
+
+</html>

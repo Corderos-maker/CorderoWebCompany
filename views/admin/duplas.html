@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "><i class="bi bi-people-fill"></i> Administrar duplas de empleados</h3>
+                <h6 class="fw-medium text-secondary">Esta sección de gestión de las duplas de empleados. Aquí puedes
+                    manejar todos todas las duplas de los trabajadores registrados en tu página web. <br>
+                    La tabla te permite eliminar, dar de baja, editar, ver datos y
+                    reportes generales de actividad.</h6>
+            </div>
+        </div>
+
+        <!-- Formulario de búsqueda -->
+        <div class="row">
+            <form class="col-sm-12 col-md-12 col-lg-6" id="searchForm">
+                <div class="row">
+                    <div class="col-lg-6 col-12  mt-5">
+                        <input type="search" class="form-control custom-input border-2" id="search" name="search"
+                            placeholder="Nombre o teléfono" required>
+                    </div>
+                    <div class="col-lg-6 col-12 d-flex flex-row align-items-center gap-2 mt-5">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <button type="reset" class="btn btn-secondary" onclick="readAllTable(null, 8)">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="openCreate()">
+                                <i class="bi bi-person-fill-add"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-lg-6 col-12 d-flex flex-row align-items-center gap-2 mt-5">
+                <!-- Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        ordenar registros
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 1)">Nombre (A-Z)</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 2)">Nombre descendente
+                                (Z-A)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 3)">Actualizado
+                                recientemente</a></li>
+                    </ul>
+                </div>
+
+                <!-- filtro por estado -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Filtrar por estado
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 4)">Activo</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 5)">Inactivo</a></li>
+                    </ul>
+                </div>
+
+                <!-- filtro por tipo -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Filtrar por tipo
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 7)">Permanente</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 6)">Temporal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p id="rowsFound" class=" fw-bold mt-3"></p>
+
+        <!-- Contenedor para la tabla con scroll -->
+        <div id="duplas" class="justify-content-center row">
+        </div>
+
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <!-- Cambiar color del botón de cerrar -->
+                        <h1 class="" id="modalTitle"> </h1>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Body del modal -->
+                    <div class="modal-body text-center">
+                        <!-- Formulario saveForm -->
+                        <form id="saveForm">
+                            <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                            <input type="number" class="d-none" id="idDupla" name="idDupla">
+                            <div class="">
+                                <div class="col-12">
+                                    <h3>Datos generales</h3>
+                                    <div class="my-4">
+                                        <div class="row justify-content-center">
+                                            <!-- Input de Usuario en una columna completa -->
+                                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                <label for="usuarioDupla" class="form-label">Nombre dupla</label>
+                                                <input type="text" class="form-control" id="usuarioDupla"
+                                                    name="usuarioDupla" placeholder="Ingrese un usuario..." required
+                                                    oninput="validateUsername(this)">
+                                            </div>
+
+                                            <!-- Claves en la misma fila -->
+                                            <div class="col-12" id="claveDupla">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-6 col-md-3 mb-3">
+                                                        <label for="claveDupla" class="form-label">Clave</label>
+                                                        <input type="password" class="form-control" id="claveDupla"
+                                                            name="claveDupla" placeholder="Ingrese su clave..."
+                                                            required>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-3 mb-3">
+                                                        <label for="claveDupla2" class="form-label">Repetir
+                                                            Clave</label>
+                                                        <input type="password" class="form-control" id="claveDupla2"
+                                                            name="claveDupla2" placeholder="Repita su clave..."
+                                                            required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="telefonoDupla" class="form-label">Teléfono de dupla</label>
+                                                <input type="text" class=" form-control" id="telefonoDupla"
+                                                    name="telefonoDupla" placeholder="Ingrese un numero valido..."
+                                                    oninput="formatPhoneNumber(this)" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h3>Tipo dupla</h3>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="tipoDupla" id="tipoDupla2"
+                                            checked value="0">
+                                        <label class="form-check-label h4" for="tipoDupla2">
+                                            Permanente
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="tipoDupla" id="tipoDupla1"
+                                            value="1">
+                                        <label class="form-check-label h4" for="tipoDupla1">
+                                            Temporal
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <!-- Columna del Empleado 1 con borde vertical en pantallas grandes -->
+                                <div class="col-12 col-lg-6 border-end border-bottom ">
+                                    <h3>Empleado 1°</h3>
+                                    <div id="infoEmpleado1">
+                                        <img src="../../resources/images/error/404Empleado.png" width="200px"
+                                            height="200px" class="rounded mx-auto d-block" alt="">
+                                        <!-- <input type="number" class="d-none" id="idEmpleado1" name="idEmpleado1"> -->
+                                        <h5 class=" mt-2">Nombre empleado</h5>
+                                        <p class="card-title "></p>
+                                        <p class="card-title "></p>
+                                        <h5 class="">Estado empleado</h5>
+                                        <p class="card-text ">Estado: <i class="${icon} "></i></p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center align-items-center mb-3">
+                                        <div class="col-6">
+                                            <h5 for="dumplaEmpleado" class="">Seleccionar empleado</h5>
+                                            <select id="duplaEmpleado1" name="duplaEmpleado1" class="form-select ">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Columna del Empleado 2 -->
+                                <div class="col-12 col-lg-6 border-bottom">
+                                    <h3>Empleado 2°</h3>
+                                    <div id="infoEmpleado2">
+                                        <img src="../../resources/images/error/404Empleado.png" width="200px"
+                                            height="200px" class="rounded mx-auto d-block" alt="">
+                                        <!-- <input type="number" class="d-none" id="idEmpleado2" name="idEmpleado2"> -->
+                                        <h5 class=" mt-2">Nombre empleado</h5>
+                                        <p class="card-title "></p>
+                                        <p class="card-title "></p>
+                                        <h5 class="">Estado empleado</h5>
+                                        <p class="card-text ">Estado: <i class="${icon} "></i></p>
+                                    </div>
+                                    <div class="row d-flex justify-content-center align-items-center mb-3">
+                                        <div class="col-6">
+                                            <h5 for="dumplaEmpleado" class="">Seleccionar empleado</h5>
+                                            <select id="duplaEmpleado2" name="duplaEmpleado2" class="form-select ">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary ps-4 pe-4">
+                                <i class="bi bi-person-fill-add me-1"></i> Aceptar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content  ">
+                    <form id="passwordForm">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idClaveDupla" name="idClaveDupla">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 " id="passwordTitle"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row text-center">
+                                <div class="col-lg-6 col-12">
+                                    <h3 class=" mb-2">Nueva clave</h3>
+                                    <input type="password" name="claveNueva" id="claveNueva"
+                                        placeholder="Clave nueva..." class="form-control">
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <h3 class=" mb-2">Repetir clave</h3>
+                                    <input type="password" name="claveNueva2" id="claveNueva2"
+                                        placeholder="Repetir clave..." class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <!-- ! cambiar el link js para el controntrolador -->
+    <script src="../../controllers/admin/duplas.js"></script>
+
+</body>
+
+</html>

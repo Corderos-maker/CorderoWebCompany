@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- Tabla para mostrar el detalle de los productos agregados al pedido de herramientas -->
+        <table class="table table-striped">
+            <!-- Cabeza de la tabla para mostrar los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <th>HERRAMIENTA</th>
+                    <th>CATEGORÍA</th>
+                    <th>CANTIDAD SELECCIONADA</th>
+                    <th>EVIDENCIA</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tableBody"></tbody>
+        </table>
+        <!-- Párrafo para mostrar un botón que finaliza el pedido -->
+        <p class="text-end">
+            <button type="button" class="btn btn-warning " onclick="openFinishOrder()">
+                <i class="bi bi-clipboard-plus-fill"></i> Finalizar pedido
+            </button>
+        </p>
+        <!-- Párrafo para mostrar un enlace a la página web principal -->
+        <p class="text-end">
+            <a href="herramientas.html" class="btn btn-success">
+                <i class="bi bi-cart-fill"></i> Solicitar mas herramientas
+            </a>
+        </p>
+
+        <!-- Componente Modal para mostrar una caja de diálogo -->
+        <div class="modal fade" id="itemModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <!-- Contenido del componente Modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-4" id="modalTitle">Cambiar cantidad de herramientas</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Formulario para actualizar cantidad -->
+                    <form id="itemForm">
+                        <div class="modal-body row">
+                            <input type="number" class="d-none" id="idDetalle" name="idDetalle">
+                            <div class="col-sm-12">
+                                <label for="cantidadHerramienta" class="form-label fs-5">Cantidad</label>
+                                <div class="input-group input-group-lg mx-auto" style="max-width: 300px;">
+                                    <input type="number" class="form-control border-primary py-2"
+                                        id="cantidadHerramienta" name="cantidadHerramienta" placeholder="0"
+                                        aria-describedby="unidadHerramienta">
+                                    <span class="input-group-text bg-primary text-white border-primary"> Limite 2</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-lg py-2 fs-5"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary btn-lg py-2 fs-5">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Componente Modal para mostrar una caja de diálogo de pregunta para solicitar el pedido -->
+        <div class="modal fade" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <!-- Contenido del componente Modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-4"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Antes
+                            de enviar tu solicitud, recuerda que... </h1>
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" role="alert">
+                            <h4>
+                                <ul class="list-unstyled"> <!-- Quita las viñetas por defecto -->
+                                    <li class="mb-2">
+                                        <i class="bi bi-check"></i> Todo lo que solicites quedará registrado en el
+                                        historial
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check"></i> Deberás justificar el pedido de cada herramienta
+                                    </li>
+                                </ul>
+                            </h4>
+                        </div>
+                        <div class="mt-3">
+                            <strong>Adjunta fotos de las herramientas
+                                necesarias para agilizar la revisión y evitar consultas adicionales.</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-lg py-2 fs-5"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-lg py-2 fs-5" onclick="finishOrder()">
+                            Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Componente Modal para mostrar una caja de diálogo para agregar imágenes de evidencia -->
+        <div class="modal fade" id="picturesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <!-- Contenido del componente Modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-4">imágenes de evidencia</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="picturesForm">
+                        <input type="number" class="d-none" id="idEvidencia" name="idEvidencia">
+                        <input type="number" class="d-none" id="typeImage" name="typeImage">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 1</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label for="imagenEvidencia1" style="cursor: pointer;">
+                                            <img id="imagenMuestra1"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                        <input id="imagenEvidencia1" type="file" name="imagenEvidencia1"
+                                            class="form-control d-none" accept=".png, .jpg">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 2</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label for="imagenEvidencia2" style="cursor: pointer;">
+                                            <img id="imagenMuestra2"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                        <input id="imagenEvidencia2" type="file" name="imagenEvidencia2"
+                                            class="form-control d-none" accept=".png, .jpg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-lg py-2 fs-5"
+                                data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary btn-lg py-2 fs-5">
+                                <i class="bi bi-plus-lg"></i> Agregar evidencia</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/public.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/public/pedido_herramienta.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

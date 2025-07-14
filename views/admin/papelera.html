@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "><i class="bi-trash-fill"></i> Pedidos de herramientas Anuladas (Papelera)</h3>
+                <h6 class="fw-medium text-secondary">Esta es la sección para poder administrar los pedidos de herramientas
+                    que fueron negadas o anuladas. Se puede visualizar
+                    las herramientas solicitadas, aprobar, restaurar o
+                    generar un documento PDF.</h6>
+            </div>
+        </div>
+        <div class="row">
+            <!-- formulario de búsqueda -->
+            <form class="col-12 my-4" id="searchForm">
+                <div class="row">
+                    <div class="col-4">
+                        <input type="search" class="form-control fs-3" name="search" placeholder="Buscar..." required>
+                    </div>
+                    <div class="col-8">
+                        <button type="submit" class="btn btn-success">
+                            <h3>
+                                <i class="bi bi-search"></i>
+                            </h3>
+                        </button>
+                        <a href="requisiciones.html" class="btn btn-secondary" role="button">
+                            <h3>
+                                <i class="bi bi-card-checklist"></i>
+                                Requisiciones
+                            </h3>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- tabla para mostrar la tabla de contenido -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Código dupla</th>
+                    <th>ESTADO</th>
+                    <th>Fecha Generada</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <!-- cuerpo de la tabla de contenido -->
+            <tbody id="tableBody"></tbody>
+        </table>
+        <!-- modal para mostrar los materiales de cada requisición -->
+        <div class="modal fade" id="saveModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start" id="modalHeader">
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="tableColumns">
+                                        <th>MATERIAL</th>
+                                        <th>CANTIDAD</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modalTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="modalFooter">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/papelera.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

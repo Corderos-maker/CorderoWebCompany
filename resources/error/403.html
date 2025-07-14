@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 403 - Acceso prohibido</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Animate.css para animaciones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+        
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff4b2b, #ff416c);
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #ff416c;
+            margin-bottom: 0;
+            line-height: 1;
+            text-shadow: 4px 4px 0 rgba(255, 65, 108, 0.2);
+        }
+        
+        .error-title {
+            font-size: 2.2rem;
+            margin: 20px 0;
+            color: #343a40;
+            font-weight: 700;
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+        
+        .btn-home {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            color: white;
+            z-index: 1;
+        }
+        
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .btn-home:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+        }
+        
+        .lock-icon {
+            font-size: 6rem;
+            color: #ff416c;
+            margin-bottom: 20px;
+            animation: shake 2.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(-5deg); }
+            20%, 40%, 60%, 80% { transform: rotate(5deg); }
+        }
+        
+        .shield-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 3rem;
+            color: rgba(255, 65, 108, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .pulse-effect {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-container animate__animated animate__fadeIn pulse-effect">
+            <i class="fas fa-shield-alt shield-icon animate__animated animate__fadeInRight"></i>
+            <i class="fas fa-lock lock-icon animate__animated animate__bounceIn"></i>
+            <h1 class="error-code animate__animated animate__bounceIn">403</h1>
+            <h2 class="error-title animate__animated animate__fadeIn animate__delay-1s">Acceso prohibido</h2>
+            <p class="error-message animate__animated animate__fadeIn animate__delay-2s">
+                No tienes permiso para acceder a este recurso.<br>
+                Por favor, verifica tus credenciales o contacta al administrador.
+            </p>
+            <div class="animate__animated animate__fadeInUp animate__delay-3s">
+                <a href="/corderoWeb/views/public/" class="btn btn-home">
+                    <i class="fas fa-home"></i> Volver al inicio
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Agregar animación al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efecto al pasar el mouse sobre el botón
+            const btnHome = document.querySelector('.btn-home');
+            btnHome.addEventListener('mouseenter', function() {
+                this.classList.add('animate__pulse');
+            });
+            btnHome.addEventListener('mouseleave', function() {
+                this.classList.remove('animate__pulse');
+            });
+            
+            // Efecto de parpadeo en el candado
+            setInterval(function() {
+                const lockIcon = document.querySelector('.lock-icon');
+                lockIcon.classList.toggle('text-warning');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

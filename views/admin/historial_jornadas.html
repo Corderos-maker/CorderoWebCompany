@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "> <i class="bi bi-clock-history"></i>Historial Jornadas Laborales</h3>
+                <h6 class="fw-medium text-secondary">Esta es la sección para poder visualizar los inicios
+                    y finalizaciones de las jornadas laborales. Las jornadas laborales se pueden filtrar
+                    dependiendo de lo que el administrador este buscando.</h6>
+            </div>
+        </div>
+        <div class="row">
+            <!-- formulario de búsqueda -->
+            <form class="col-12 my-4" id="searchForm">
+                
+            </form>
+        </div>
+        <!-- tabla para mostrar la tabla de contenido -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>CÓDIGO DUPLA</th>
+                    <th>TIPO DE REGISTRO</th>
+                    <th>FECHA JORNADA</th>
+                </tr>
+            </thead>
+            <!-- cuerpo de la tabla de contenido -->
+            <tbody id="tableBody"></tbody>
+        </table>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/historial_jornadas.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

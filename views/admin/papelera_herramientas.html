@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "><i class="bi-trash-fill"></i> Requisiciones Anuladas (Papelera)</h3>
+                <h6 class="fw-medium text-secondary">Esta es la sección para poder administrar las requisiciones
+                    Que fueron negadas o anuladas. Se puede visualizar
+                    las herramientas solicitadas, aprobar, restaurar o
+                    generar un documento PDF.</h6>
+            </div>
+        </div>
+        <div class="row">
+            <!-- formulario de búsqueda -->
+            <form class="col-12 my-4" id="searchForm">
+                <div class="row">
+                    <div class="col-4">
+                        <input type="search" class="form-control fs-3" name="search" placeholder="Buscar..." required>
+                    </div>
+                    <div class="col-8">
+                        <button type="submit" class="btn btn-success">
+                            <h3>
+                                <i class="bi bi-search"></i>
+                            </h3>
+                        </button>
+                        <a href="pedidos_herramientas.html" class="btn btn-secondary" role="button">
+                            <h3>
+                                <i class="bi bi-card-checklist"></i>
+                                Pedidos Herramientas
+                            </h3>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- tabla para mostrar la tabla de contenido -->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Código dupla</th>
+                    <th>ESTADO</th>
+                    <th>FECHA GENERADA</th>
+                    <th>FECHA ANULADA</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <!-- cuerpo de la tabla de contenido -->
+            <tbody id="tableBody"></tbody>
+        </table>
+        <!-- modal para mostrar las herramientas de cada pedido anulado -->
+        <div class="modal fade" id="saveModal" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex-column align-items-start" id="modalHeader">
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="tableColumns">
+                                        <th>HERRAMIENTA</th>
+                                        <th>CANTIDAD</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modalTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer" id="modalFooter">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Componente Modal para mostrar una caja de diálogo para agregar imágenes de evidencia -->
+        <div class="modal fade" id="picturesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <!-- Contenido del componente Modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-4">imágenes de evidencia</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="picturesForm">
+                        <input type="number" class="d-none" id="idEvidencia" name="idEvidencia">
+                        <input type="number" class="d-none" id="typeImage" name="typeImage">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 1</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label>
+                                            <img id="imagenMuestra1"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12 mt-3">
+                                    <h3>Imagen evidencia 2</h3>
+                                    <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                        <label>
+                                            <img id="imagenMuestra2"
+                                                class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                                src="../../resources/images/error/404material.png"
+                                                onerror="this.onerror=null; this.src='../../resources/images/error/404material.png';"
+                                                alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-lg py-2 fs-5"
+                                data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/papelera_herramientas.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+    <!-- <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css"> -->
+
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h1 id="mainTitle"></h1>
+
+        <!-- titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold "> <i class="bi bi-person-vcard-fill me-1"></i> Administrar datos personales
+                    empleados</h3>
+                <h6 class="fw-medium text-secondary">Bienvenido a la sección de gestión de empleados. Aquí puedes
+                    manejar todos los trabajadores registrados en tu página web. <br>
+                    La tabla te permite eliminar, dar de baja, editar, ver graficas y
+                    reportes generales de actividad.</h6>
+            </div>
+        </div>
+        <!-- ? Formulario de búsqueda -->
+        <div class="row">
+            <form class="col-sm-12 col-md-12 col-lg-10" id="searchForm">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mt-5">
+                        <input type="search" class="form-control custom-input border-2" id="search" name="search"
+                            placeholder="Buscador..." required>
+                    </div>
+                    <div class="col-lg-5 col-md-9 col-sm-9 d-flex flex-row align-items-center gap-2 mt-5">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <button type="reset" class="btn btn-secondary" onclick="fillTable()">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="openCreate()">
+                                <i class="bi bi-person-fill-add"></i>
+                            </button>
+                        </div>
+
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                ordenar registros
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 1)">Nombre (A-Z)</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 2)">Nombre descendente
+                                        (Z-A)</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 3)">Actualizado
+                                        recientemente</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- filtro por estado -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Estado empleado
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 6)">Información
+                                        agregada</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" onclick="readAllTable(null, 7)">Información
+                                        pendiente a agregar</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p id="rowsFound" class=" fw-bold mt-3"></p>
+
+        <!-- Contenedor para la tabla con scroll -->
+
+        <div id="empleados" class=" justify-content-center row">
+        </div>
+        <!-- Modal Alterar registro (agregar o editar) -->
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h1 class="" id="modalTitle"></h1>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                        <!-- Cambiar color del botón de cerrar -->
+                    </div>
+
+                    <form id="saveForm">
+                        <div class="modal-body">
+                            <!-- Formulario saveForm -->
+                            <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                            <input type="number" class="d-none" id="idEmpleado" name="idEmpleado">
+                            <!-- Body del modal -->
+                            <!-- Inputs -->
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-12 text-center">
+                                    <label for="imagenEmpleado">
+                                        <h3 for="imagenEmpleado" class="form-label">Imagen
+                                            Empleado</h3>
+                                        <img id="imagenMuestra"
+                                            class="rounded  mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                            src="../../resources/images/error/404Empleado.png" alt="..." width="200px"
+                                            height="200px">
+                                        <input id="imagenEmpleado" type="file" name="imagenEmpleado"
+                                            class="d-none form-control" accept=".png, .jpg">
+                                    </label>
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <label class="form-label">Nombre(s)</label>
+                                    <input id="nombreEmpleado" name="nombreEmpleado" class="form-control"
+                                        autocomplete="off" required oninput="formatAlphabetic(this)"
+                                        placeholder="Ingrese el nombre...">
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <label class="form-label">Apellido(s)</label>
+                                    <input id="apellidoEmpleado" name="apellidoEmpleado" autocomplete="off"
+                                        class="form-control" required oninput="formatAlphabetic(this)"
+                                        placeholder="Ingrese el apellido...">
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <label class="form-label">DUI</label>
+                                    <input id="duiEmpleado" name="duiEmpleado" class="form-control" autocomplete="off"
+                                        type="text" required oninput="formatDui(this)" placeholder="Ingrese el DUI...">
+                                </div>
+                                <div class="col-6 mt-2 ">
+                                    <label class="form-label">Numero teléfono</label>
+                                    <input id="telefonoEmpleado" name="telefonoEmpleado" class="form-control"
+                                        autocomplete="off" required oninput="formatPhoneNumber(this)"
+                                        placeholder="Ingrese el numero de teléfono...">
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <label class="form-label">Departamento</label>
+                                    <select id="departamentoEmpleado" name="departamentoEmpleado" class="form-control"
+                                        autocomplete="off" onchange="actualizarMunicipios()">
+                                        <option value="No seleccionado">Seleccionar Departamento</option>
+                                        <option value="Ahuachapan">Ahuachapán</option>
+                                        <option value="Cabañas">Cabañas</option>
+                                        <option value="Chalatenango">Chalatenango</option>
+                                        <option value="La Libertad">La Libertad</option>
+                                        <option value="La Paz">La Paz</option>
+                                        <option value="San Salvador">San Salvador</option>
+                                        <option value="San Vicente">San Vicente</option>
+                                        <option value="Santa Ana">Santa Ana</option>
+                                        <option value="Sonsonate">Sonsonate</option>
+                                        <option value="Usulután">Usulután</option>
+                                        <option value="Morazán">Morazán</option>
+                                        <option value="La Unión">La Unión</option>
+                                        <option value="San Miguel">San Miguel</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <label class="form-label">Municipio</label>
+                                    <select id="municipioEmpleado" name="municipioEmpleado" class="form-control"
+                                        autocomplete="off">
+                                        <option>Primero seleccione un departamento</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary ps-4 pe-4">
+                                <i class="bi bi-person-fill-add me-1"></i> Aceptar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para elegir el tipo de búsqueda (zona o municipio) -->
+        <div class="modal fade" tabindex="-1" id="typeSearch">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Seleccione tipo de búsqueda</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>hola mundo</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <!-- ! cambiar el link js para el controntrolador -->
+    <script src="../../controllers/admin/empleados.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Contenido principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <div class="container my-5">
+            <div class="row justify-content-center g-3"> <!-- `g-3` añade separación entre botones -->
+                <!-- Botón 1 -->
+                <div class="col-lg-5 col-12 d-flex justify-content-center">
+                    <a href="materiales.html" class="text-reset text-decoration-none">
+                        <button class="btn btn-primary p-5 d-flex align-items-center justify-content-center"
+                            style="width: 100%; max-width: 300px; aspect-ratio: 1/1;">
+                            <i class="bi bi-box2-fill display-4"></i>
+                            <h1>Materiales de Trabajo</h1>
+                        </button>
+                    </a>
+                </div>
+
+                <!-- Botón 2 -->
+                <div class="col-lg-5 col-12 d-flex justify-content-center">
+                    <a href="herramientas.html" class="text-reset text-decoration-none">
+                        <button class="btn btn-success p-5 d-flex align-items-center justify-content-center"
+                            style="width: 100%; max-width: 300px; aspect-ratio: 1/1;">
+                            <i class="bi bi-tools display-4"></i>
+                            <h1>Equipo de trabajo</h1>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/public.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/public/bodega.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>

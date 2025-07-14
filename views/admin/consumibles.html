@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../resources/css/general.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Consumible principal del documento -->
+    <main>
+        <h2 id="mainTitle"></h2>
+        <!-- ? titulo principal -->
+        <div class="container-fluid">
+            <div class="row py-4">
+                <h3 class="fw-bold"><i class="bi bi-tags-fill"></i>Gestión Consumibles </h3>
+                <h6 class="fw-medium text-secondary">Bienvenido a la sección de gestión de consumibles. Aquí
+                    puedes
+                    manejar todos los conducibles registrados para asignárselos a los consumibles.<br>
+                    La tabla te permite eliminar, dar de baja, editar, ver gráficas, agregar alertas de cantidades
+                    mínimas y
+                    reportes generales de actividad.</h6>
+            </div>
+        </div>
+        <a href="categorias_consumibles.html">
+            <button type="button" class="btn btn-success mx-3 my-4">
+                <h4>Categorías Consumibles <i class="bi bi-cup-hot-fill"></i> </h4>
+            </button>
+        </a>
+        <!-- Formulario de búsqueda -->
+        <div class="row">
+            <form class="col-sm-12 col-md-6" id="searchForm">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="search" class="form-control" name="search" placeholder="Buscar" required>
+                    </div>
+                    <div class="col-6">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">
+                                <h5><i class="bi bi-search"></i></h5>
+                            </button>
+                            <button type="reset" class="btn btn-secondary" onclick="fillTable(1)">
+                                <h5> <i class="bi bi-arrow-counterclockwise"></i></h5>
+                            </button>
+                            <!-- Botón para abrir una caja de diálogo al momento de crear un nuevo registro -->
+                            <button type="button" class="btn btn-warning" onclick="openCreate()">
+                                <h5><i class="bi bi-plus-square-fill"></i></h5>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p id="rowsFound" class=" fw-bold mt-3"></p>
+        <!-- Contenedor para la tabla con scroll-->
+        <div id="tableBody" class="container justify-content-center row">
+        </div>
+
+        <div class="modal fade" id="saveModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitle">Titulo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="saveForm">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idConsumible" name="idConsumible">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 text-center"> <!-- Asegura el centrado de la imagen -->
+                                    <label for="imagenConsumible" style="cursor: pointer;">
+                                        <img id="imagenMuestra"
+                                            class="rounded mx-auto d-block img-fluid mt-3 border border-3 border-secondary-subtle rounded-circle imagen_R"
+                                            src="../../resources/images/error/404Material.png"
+                                            onerror="this.onerror=null; this.src='../../resources/images/error/404Material.png';"
+                                            id="imagenVisualAdmin" alt="ERROR FOTO MODAL" width="200px" height="200px">
+                                    </label>
+                                    <input id="imagenConsumible" type="file" name="imagenConsumible"
+                                        class="form-control d-none" accept=".png, .jpg">
+                                </div>
+                                <div class="col-12">
+                                    <div class="row gy-3">
+                                        <!-- ? Nombre consumible -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Nombre consumible</label>
+                                            <input id="nombreConsumible" name="nombreConsumible" class="form-control"
+                                                autocomplete="off" required
+                                                placeholder="Ingrese el nombre del consumible...">
+                                        </div>
+                                        <!-- ? Descripción consumible-->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Descripción consumible</label>
+                                            <textarea id="descripcionConsumible" name="descripcionConsumible"
+                                                autocomplete="off" class="form-control" required
+                                                placeholder="ingrese la descripción del consumible..."></textarea>
+                                        </div>
+                                        <!-- ? Categoría consumible-->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Categoría consumible</label>
+                                            <select id="categoriaConsumible" name="categoriaConsumible"
+                                                class="form-select" autocomplete="off" required>
+                                            </select>
+                                        </div>
+                                        <!-- ? Estado alerta solicitud -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label">Estado alerta de solicitud</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                    name="estadoAlertaConsumible" id="estadoAlertaConsumible1" value="1"
+                                                    checked onclick="statusAlert(2)">
+                                                <label class="form-check-label" for="estadoAlertaConsumible1">
+                                                    Activar alerta de solicitud
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                    name="estadoAlertaConsumible" id="estadoAlertaConsumible2" value="0"
+                                                    onclick="statusAlert(1)">
+                                                <label class="form-check-label" for="estadoAlertaConsumible2">
+                                                    Desactivar alerta de solicitud
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- ? Cantidad contenido -->
+                                        <div class="col-12 col-lg-6 mt-4">
+                                            <label class="form-label" for="codigoConsumible">Cantidad contenido
+                                            </label>
+                                            <input type="number" class="form-control" id="cantidadConsumible"
+                                                name="cantidadConsumible" placeholder="ingrese cantidad contenido...">
+                                        </div>
+                                        <!-- ? Cantidad minima -->
+                                        <div class="col-12 col-lg-6">
+                                            <label class="form-label" for="cantidadMinimaConsumible">Cantidad
+                                                necesaria para
+                                                solicitud
+                                                <!-- Icono con tooltip -->
+                                                <span class="text-primary ms-2" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Alerta que se muestra al llegar a la cantidad mínima">
+                                                    <i class="bi bi-question-circle-fill fs-4"></i>
+                                                    <!-- Bootstrap Icons -->
+                                                </span>
+                                            </label>
+                                            <input type="number" class="form-control" id="cantidadMinimaConsumible"
+                                                name="cantidadMinimaConsumible"
+                                                placeholder="Ingrese cantidad mínima contenido...">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="modalButton">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal para alterar la cantidad del Contenido -->
+        <div class="modal fade" id="consumibleModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <!-- <form id=""></form> -->
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="number" class="d-none" id="idConsumibleCantidad" name="idConsumible">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Actualizar cantidad</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center gap-3">
+                        <!-- gap-3 añade espacio vertical entre botones -->
+                        <button type="button" class="btn btn-secondary w-75" data-bs-target="#TipoConsumibleModal"
+                            data-bs-toggle="modal"
+                            onclick="openQuantity(document.getElementById('idConsumibleCantidad').value, 1)">
+                            <h3 class="mb-0">Agregar
+                                Contenido</h3>
+                        </button>
+                        <button type="button" class="btn btn-secondary w-75" data-bs-target="#TipoConsumibleModal"
+                            data-bs-toggle="modal"
+                            onclick="openQuantity(document.getElementById('idConsumibleCantidad').value, 2)">
+                            <h3 class="mb-0">Restar
+                                Contenido</h3>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modas para agregar o restar la cantidad del material -->
+        <div class="modal fade" id="TipoConsumibleModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content  ">
+                    <form id="updateQuantityForm">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idTipoConsumibleCantidad" name="idTipoConsumibleCantidad">
+                        <div class="modal-header">
+                            <h2 class="modal-tittle" id="TipoAltConsumible"></h2>
+                            <button type="button" class="btn-close  text-reset" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column align-items-center gap-3 text-center">
+                            <h4>Cantidad Actual:</h4>
+                            <h4 class="" id="cantidadActualConsumible"></h4>
+                            <h4>Nueva cantidad:</h4>
+                            <h4 id="cantidadActualizadaConsumible"></h4>
+                            <div id="alertaCantidad"></div>
+                            <div class="input-group w-50">
+                                <span class="input-group-text">Cantidad</span>
+                                <input type="number" class="form-control" aria-label="Cantidad a modificar..."
+                                    id="actualizarConsumible" name="actualizarConsumible" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- IMPORTACIÓN DE ARCHIVOS JAVASCRIPT -->
+    <!-- Llamada al framework y librería de mensajes -->
+    <script src="../../resources/js/bootstrap.bundle.min.js"></script>
+    <script src="../../resources/js/sweetalert.min.js"></script>
+    <!-- Llamada al controlador general de la aplicación -->
+    <script type="text/javascript" src="../../controllers/utils/components.js"></script>
+    <!-- Llamada al controlador del sitio privado -->
+    <script type="text/javascript" src="../../controllers/utils/admin.js"></script>
+    <!-- ? Llama al validador de textos -->
+    <script src="../../controllers/utils/inputValidator.js"></script>
+    <!-- Llamada al controlador de la página web -->
+    <script src="../../controllers/admin/consumibles.js"></script>
+    <!-- ! cambiar el link js para el controntrolador -->
+
+</body>
+
+</html>
