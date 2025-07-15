@@ -254,7 +254,8 @@ class PedidoHerramientasHandler
                 ) AS tiene_exceso
                 FROM
                     `tb_pedidos_herramientas` ph
-                INNER JOIN tb_duplas dp
+                INNER JOIN tb_duplas dp ON
+                dp.id_dupla = ph.id_dupla
                 WHERE ph.`estado_pedido_herramienta` = "Procesando"';
         return Database::getRows($sql);
     }
@@ -276,7 +277,8 @@ class PedidoHerramientasHandler
                 ) AS tiene_exceso
                 FROM
                     `tb_pedidos_herramientas` ph
-                INNER JOIN tb_duplas dp
+                INNER JOIN tb_duplas dp ON
+                dp.id_dupla = ph.id_dupla
                 WHERE ph.`estado_pedido_herramienta` = "Anulada"';
         return Database::getRows($sql);
     }
@@ -298,7 +300,8 @@ class PedidoHerramientasHandler
                 ) AS tiene_exceso
                 FROM
                     `tb_pedidos_herramientas` ph
-                INNER JOIN tb_duplas dp
+                INNER JOIN tb_duplas dp ON
+                dp.id_dupla = ph.id_dupla
                 ORDER BY ph.`fecha_accion_pedido` DESC;';
         return Database::getRows($sql);
     }
@@ -469,7 +472,8 @@ class PedidoHerramientasHandler
                 ) AS tiene_exceso
                 FROM
                     `tb_pedidos_herramientas` ph
-                INNER JOIN tb_duplas dp
+                INNER JOIN tb_duplas dp ON
+                dp.id_dupla = ph.id_dupla
                 WHERE ph.`id_pedido_herramienta` = ?';
         $params = array($this->id_pedido);
         return Database::getRow($sql, $params);
